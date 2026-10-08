@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import { LiveOperationsMap } from '../components/LiveOperationsMap';
 import { NewServiceRequestModal } from '../components/NewServiceRequestModal';
 
 export const DashboardPage: React.FC = () => {
+  const { user } = useAuth();
+  const hour = new Date().getHours();
+  const greeting = hour < 12 ? 'Good Morning' : hour < 18 ? 'Good Afternoon' : 'Good Evening';
+  const displayDate = new Date().toLocaleDateString('en-US', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+
   const [modalOpen, setModalOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [technicianFilter, setTechnicianFilter] = useState<string>('ALL');
@@ -65,7 +71,7 @@ export const DashboardPage: React.FC = () => {
 
           <div>
             <h1 style={{ margin: 0, fontSize: '24px', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
-              Good Evening, Likitha!
+              {greeting}, {user?.name || 'Operator'}!
             </h1>
             <p style={{ margin: '2px 0 0 0', fontSize: '13px', color: 'var(--text-muted)' }}>
               Here's what's happening with your service operations today.
@@ -76,7 +82,7 @@ export const DashboardPage: React.FC = () => {
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           <div style={{ textAlign: 'right' }}>
             <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)' }}>
-              Tue, 7 Oct 2026
+              {displayDate}
             </div>
             <div style={{ fontSize: '12px', color: 'var(--text-primary)', fontWeight: 800 }}>
               06:24 PM

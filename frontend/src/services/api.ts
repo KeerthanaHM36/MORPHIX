@@ -135,6 +135,10 @@ export const techniciansAPI = {
     const res = await api.get<Technician>(`/technicians/${id}`);
     return res.data;
   },
+  update: async (id: string, data: any) => {
+    const res = await api.patch<Technician>(`/technicians/${id}`, data);
+    return res.data;
+  },
   getMyAssignments: async (technicianId?: string) => {
     const res = await api.get<any[]>('/technicians/me/assignments', {
       params: technicianId ? { technician_id: technicianId } : {},

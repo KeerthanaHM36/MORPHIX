@@ -33,8 +33,8 @@ export const TechniciansPage: React.FC = () => {
         await techniciansAPI.triggerUnavailable(tech.id, 'Operator toggled availability status to UNAVAILABLE');
         alert(`Disruption registered! ${tech.employee_code} marked UNAVAILABLE. Exceptions & AI recovery plans synthesized.`);
       } else {
-        await techniciansAPI.get(tech.id);
-        alert(`Status updated.`);
+        await techniciansAPI.update(tech.id, { availability_status: 'AVAILABLE' });
+        alert(`Status updated to AVAILABLE.`);
       }
       loadTechnicians();
     } catch (err: any) {

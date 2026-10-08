@@ -83,3 +83,44 @@ class ServiceRequestResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+class CustomerRequestCreate(BaseModel):
+    machine_id: UUID
+    title: str = Field(..., max_length=250)
+    description: Optional[str] = None
+    priority: str = Field("MEDIUM", description="LOW, MEDIUM, HIGH, CRITICAL")
+    skill_id: Optional[UUID] = None
+    minimum_proficiency: Optional[int] = Field(3, ge=1, le=5)
+
+class AllocatedTechnicianDetails(BaseModel):
+    technician_id: UUID
+    user_id: Optional[UUID] = None
+    name: str
+    employee_code: str
+    specialization: Optional[str] = None
+    experience_years: float
+    phone: Optional[str] = None
+    email: Optional[str] = None
+    availability_status: str
+    match_score: float
+    score_breakdown: Optional[dict] = None
+    estimated_distance_km: float
+    current_latitude: Optional[float] = None
+    current_longitude: Optional[float] = None
+    skills: Optional[List[dict]] = None
+
+class ServiceRequestTrackingResponse(BaseModel):
+    service_request: ServiceRequestResponse
+    assignment_id: Optional[UUID] = None
+    assignment_status: Optional[str] = None
+    allocated_technician: Optional[AllocatedTechnicianDetails] = None
+    site_latitude: Optional[float] = None
+    site_longitude: Optional[float] = None
+    site_name: Optional[str] = None
+    site_address: Optional[str] = None
+    machine_name: Optional[str] = None
+    machine_code: Optional[str] = None
+    distance_km: Optional[float] = None
+    status_history: Optional[List[dict]] = None
+    reallocated: bool = False
+    message: Optional[str] = None

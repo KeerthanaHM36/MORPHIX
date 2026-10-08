@@ -155,15 +155,15 @@ export const ServiceRequestDetailPage: React.FC = () => {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24 }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 6 }}>
-            <span className="font-mono" style={{ fontSize: '1.2rem', fontWeight: 800, color: '#38bdf8' }}>
+            <span className="font-mono" style={{ fontSize: '1.2rem', fontWeight: 800, color: '#0284c7' }}>
               {request.request_code}
             </span>
             <StatusBadge status={request.priority} type="priority" />
             <StatusBadge status={request.status} type="status" />
             <StatusBadge status={request.sla_status || 'SAFE'} type="sla" />
           </div>
-          <h1 style={{ fontSize: '1.7rem', fontWeight: 800, color: '#f8fafc' }}>{request.title}</h1>
-          <p style={{ fontSize: '0.88rem', color: '#94a3b8', marginTop: 4 }}>
+          <h1 style={{ fontSize: '1.7rem', fontWeight: 800, color: '#0f172a' }}>{request.title}</h1>
+          <p style={{ fontSize: '0.88rem', color: '#64748b', marginTop: 4 }}>
             Located at {request.site_name} • Machine: {request.machine_name} ({request.machine_code})
           </p>
         </div>
@@ -185,23 +185,23 @@ export const ServiceRequestDetailPage: React.FC = () => {
         {/* Left Column: Diagnostics & Requirements */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
           <div className="card">
-            <h3 className="card-title">Telemetry & Problem Analysis</h3>
-            <p style={{ fontSize: '0.9rem', color: '#cbd5e1', lineHeight: 1.6, marginTop: 8 }}>
+            <h3 className="card-title" style={{ color: '#0f172a' }}>Telemetry & Problem Analysis</h3>
+            <p style={{ fontSize: '0.9rem', color: '#334155', lineHeight: 1.6, marginTop: 8 }}>
               {request.description || 'No diagnostic telemetry description recorded.'}
             </p>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 14, marginTop: 18, paddingTop: 16, borderTop: '1px solid var(--border-subtle)' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 14, marginTop: 18, paddingTop: 16, borderTop: '1px solid #e2e8f0' }}>
               <div>
                 <span style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase' }}>Request Type</span>
-                <div style={{ fontWeight: 600, fontSize: '0.9rem', marginTop: 2 }}>{request.request_type}</div>
+                <div style={{ fontWeight: 600, fontSize: '0.9rem', color: '#0f172a', marginTop: 2 }}>{request.request_type}</div>
               </div>
               <div>
                 <span style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase' }}>Est. Duration</span>
-                <div style={{ fontWeight: 600, fontSize: '0.9rem', marginTop: 2 }}>{request.estimated_duration_minutes || 120} minutes</div>
+                <div style={{ fontWeight: 600, fontSize: '0.9rem', color: '#0f172a', marginTop: 2 }}>{request.estimated_duration_minutes || 120} minutes</div>
               </div>
               <div>
                 <span style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase' }}>SLA Deadline</span>
-                <div style={{ fontWeight: 600, fontSize: '0.85rem', color: '#f59e0b', marginTop: 2 }}>
+                <div style={{ fontWeight: 600, fontSize: '0.85rem', color: '#d97706', marginTop: 2 }}>
                   {request.sla_deadline ? new Date(request.sla_deadline).toLocaleString() : 'N/A'}
                 </div>
               </div>
@@ -210,10 +210,10 @@ export const ServiceRequestDetailPage: React.FC = () => {
 
           {/* Required Skills & Parts */}
           <div className="card">
-            <h3 className="card-title">Technical Competency & Part Demands</h3>
+            <h3 className="card-title" style={{ color: '#0f172a' }}>Technical Competency & Part Demands</h3>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginTop: 12 }}>
               <div>
-                <h4 style={{ fontSize: '0.82rem', color: '#38bdf8', textTransform: 'uppercase', marginBottom: 8 }}>
+                <h4 style={{ fontSize: '0.82rem', color: '#0284c7', textTransform: 'uppercase', marginBottom: 8, fontWeight: 700 }}>
                   Required Skills
                 </h4>
                 {request.required_skills && request.required_skills.length > 0 ? (
@@ -222,16 +222,18 @@ export const ServiceRequestDetailPage: React.FC = () => {
                       key={sk.skill_id}
                       style={{
                         padding: '8px 12px',
-                        backgroundColor: 'var(--bg-surface-elevated)',
+                        backgroundColor: '#f8fafc',
+                        border: '1px solid #e2e8f0',
                         borderRadius: 6,
                         marginBottom: 6,
                         fontSize: '0.85rem',
                         display: 'flex',
                         justifyContent: 'space-between',
+                        color: '#0f172a',
                       }}
                     >
-                      <span>{sk.skill_name}</span>
-                      <span className="font-mono" style={{ color: '#06b6d4' }}>Min Level: {sk.minimum_proficiency}/5</span>
+                      <span style={{ fontWeight: 600 }}>{sk.skill_name}</span>
+                      <span className="font-mono" style={{ color: '#0284c7' }}>Min Level: {sk.minimum_proficiency}/5</span>
                     </div>
                   ))
                 ) : (
@@ -240,7 +242,7 @@ export const ServiceRequestDetailPage: React.FC = () => {
               </div>
 
               <div>
-                <h4 style={{ fontSize: '0.82rem', color: '#38bdf8', textTransform: 'uppercase', marginBottom: 8 }}>
+                <h4 style={{ fontSize: '0.82rem', color: '#0284c7', textTransform: 'uppercase', marginBottom: 8, fontWeight: 700 }}>
                   Specified Spare Parts
                 </h4>
                 {request.required_parts && request.required_parts.length > 0 ? (
@@ -249,19 +251,21 @@ export const ServiceRequestDetailPage: React.FC = () => {
                       key={p.spare_part_id}
                       style={{
                         padding: '8px 12px',
-                        backgroundColor: 'var(--bg-surface-elevated)',
+                        backgroundColor: '#f8fafc',
+                        border: '1px solid #e2e8f0',
                         borderRadius: 6,
                         marginBottom: 6,
                         fontSize: '0.85rem',
                         display: 'flex',
                         justifyContent: 'space-between',
+                        color: '#0f172a',
                       }}
                     >
                       <div>
-                        <div>{p.part_name}</div>
+                        <div style={{ fontWeight: 600 }}>{p.part_name}</div>
                         <span className="font-mono" style={{ fontSize: '0.72rem', color: '#64748b' }}>{p.part_code}</span>
                       </div>
-                      <span className="font-mono" style={{ color: '#10b981' }}>Qty: {p.required_quantity}</span>
+                      <span className="font-mono" style={{ color: '#059669', fontWeight: 600 }}>Qty: {p.required_quantity}</span>
                     </div>
                   ))
                 ) : (
@@ -273,8 +277,8 @@ export const ServiceRequestDetailPage: React.FC = () => {
 
           {/* Service Tasks */}
           <div className="card">
-            <h3 className="card-title">Execution Tasks Protocol</h3>
-            <p style={{ fontSize: '0.8rem', color: '#94a3b8', marginBottom: 12 }}>
+            <h3 className="card-title" style={{ color: '#0f172a' }}>Execution Tasks Protocol</h3>
+            <p style={{ fontSize: '0.8rem', color: '#64748b', marginBottom: 12 }}>
               Click any step to advance execution lifecycle (Pending → In Progress → Completed)
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -285,8 +289,8 @@ export const ServiceRequestDetailPage: React.FC = () => {
                     onClick={() => handleTaskStatusToggle(task)}
                     style={{
                       padding: '12px 14px',
-                      backgroundColor: 'var(--bg-surface-elevated)',
-                      border: '1px solid var(--border-subtle)',
+                      backgroundColor: '#f8fafc',
+                      border: '1px solid #e2e8f0',
                       borderRadius: 8,
                       display: 'flex',
                       alignItems: 'center',
@@ -295,11 +299,11 @@ export const ServiceRequestDetailPage: React.FC = () => {
                     }}
                   >
                     <div>
-                      <div style={{ fontWeight: 600, fontSize: '0.88rem' }}>
+                      <div style={{ fontWeight: 600, fontSize: '0.88rem', color: '#0f172a' }}>
                         Step {task.sequence_number}: {task.task_name}
                       </div>
                       {task.description && (
-                        <div style={{ fontSize: '0.78rem', color: '#94a3b8', marginTop: 2 }}>{task.description}</div>
+                        <div style={{ fontSize: '0.78rem', color: '#64748b', marginTop: 2 }}>{task.description}</div>
                       )}
                     </div>
                     <StatusBadge status={task.status} />
@@ -321,25 +325,25 @@ export const ServiceRequestDetailPage: React.FC = () => {
             <div
               className="card"
               style={{
-                backgroundColor: 'rgba(6, 182, 212, 0.05)',
-                borderColor: 'rgba(6, 182, 212, 0.4)',
+                backgroundColor: '#f0fdf4',
+                borderColor: '#86efac',
               }}
             >
               <div className="card-header">
-                <span className="card-title" style={{ color: '#38bdf8' }}>
+                <span className="card-title" style={{ color: '#059669' }}>
                   👷 Active Dispatch Assignment
                 </span>
                 <StatusBadge status={assignment.assignment_status} />
               </div>
 
-              <div style={{ fontSize: '1.1rem', fontWeight: 700, color: '#f8fafc', marginBottom: 4 }}>
+              <div style={{ fontSize: '1.1rem', fontWeight: 700, color: '#0f172a', marginBottom: 4 }}>
                 {assignment.technician_name} ({assignment.technician_code})
               </div>
-              <div style={{ fontSize: '0.82rem', color: '#94a3b8', marginBottom: 14 }}>
+              <div style={{ fontSize: '0.82rem', color: '#64748b', marginBottom: 14 }}>
                 Assigned at {new Date(assignment.assigned_at).toLocaleString()}
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, fontSize: '0.82rem', color: '#cbd5e1' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, fontSize: '0.82rem', color: '#334155' }}>
                 <div>⏱ Scheduled: {assignment.scheduled_start ? new Date(assignment.scheduled_start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Immediate'}</div>
                 <div>🚗 Distance: {assignment.travel_distance_km || 0} km</div>
                 <div>🎯 Match Score: {assignment.assignment_score || 95}%</div>
@@ -350,8 +354,8 @@ export const ServiceRequestDetailPage: React.FC = () => {
             <div className="card">
               <div className="card-header">
                 <div>
-                  <span className="card-title">🎯 AI Technician Matching Engine</span>
-                  <p style={{ fontSize: '0.8rem', color: '#94a3b8' }}>
+                  <span className="card-title" style={{ color: '#0f172a' }}>🎯 AI Technician Matching Engine</span>
+                  <p style={{ fontSize: '0.8rem', color: '#64748b' }}>
                     Multi-objective constraint ranking: Skill (30%), Exp (20%), GPS (20%), Availability (15%), Workload (15%)
                   </p>
                 </div>
@@ -373,23 +377,23 @@ export const ServiceRequestDetailPage: React.FC = () => {
                       key={c.technician_id}
                       style={{
                         padding: '12px',
-                        backgroundColor: 'var(--bg-surface-elevated)',
+                        backgroundColor: '#f8fafc',
                         borderRadius: 8,
-                        border: c.is_eligible ? '1px solid rgba(16, 185, 129, 0.3)' : '1px solid rgba(239, 68, 68, 0.3)',
+                        border: c.is_eligible ? '1px solid #86efac' : '1px solid #fca5a5',
                       }}
                     >
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                         <div>
-                          <div style={{ fontWeight: 700, fontSize: '0.9rem', color: '#f8fafc' }}>
+                          <div style={{ fontWeight: 700, fontSize: '0.9rem', color: '#0f172a' }}>
                             {c.name} ({c.employee_code})
                           </div>
-                          <div style={{ fontSize: '0.78rem', color: '#94a3b8' }}>{c.specialization}</div>
+                          <div style={{ fontSize: '0.78rem', color: '#64748b' }}>{c.specialization}</div>
                         </div>
                         <span
                           style={{
                             fontWeight: 700,
                             fontSize: '0.85rem',
-                            color: c.is_eligible ? '#10b981' : '#f87171',
+                            color: c.is_eligible ? '#059669' : '#dc2626',
                           }}
                         >
                           {c.match_score}%
@@ -410,7 +414,7 @@ export const ServiceRequestDetailPage: React.FC = () => {
                           {dispatching ? 'Dispatching...' : 'Dispatch Technician'}
                         </button>
                       ) : (
-                        <div style={{ fontSize: '0.72rem', color: '#f87171', marginTop: 4 }}>
+                        <div style={{ fontSize: '0.72rem', color: '#dc2626', marginTop: 4 }}>
                           Ineligible: {c.ineligibility_reasons.join(', ')}
                         </div>
                       )}
@@ -423,8 +427,8 @@ export const ServiceRequestDetailPage: React.FC = () => {
 
           {/* Completion Proof & Evidence */}
           <div className="card">
-            <h3 className="card-title">Completion Verification & Proof</h3>
-            <p style={{ fontSize: '0.8rem', color: '#94a3b8', marginBottom: 14 }}>
+            <h3 className="card-title" style={{ color: '#0f172a' }}>Completion Verification & Proof</h3>
+            <p style={{ fontSize: '0.8rem', color: '#64748b', marginBottom: 14 }}>
               Uploaded telemetry, photos, and inspection signoffs
             </p>
 
@@ -436,18 +440,18 @@ export const ServiceRequestDetailPage: React.FC = () => {
                     key={e.id}
                     style={{
                       padding: 12,
-                      backgroundColor: 'var(--bg-surface-elevated)',
+                      backgroundColor: '#f8fafc',
                       borderRadius: 8,
-                      border: '1px solid var(--border-subtle)',
+                      border: '1px solid #e2e8f0',
                     }}
                   >
                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
-                      <span className="font-mono" style={{ fontSize: '0.75rem', color: '#38bdf8' }}>{e.evidence_type}</span>
+                      <span className="font-mono" style={{ fontSize: '0.75rem', color: '#0284c7' }}>{e.evidence_type}</span>
                       <StatusBadge status={e.is_verified ? 'COMPLETED' : 'PENDING'} />
                     </div>
-                    {e.description && <div style={{ fontSize: '0.82rem', color: '#f8fafc', marginBottom: 4 }}>{e.description}</div>}
+                    {e.description && <div style={{ fontSize: '0.82rem', color: '#0f172a', marginBottom: 4 }}>{e.description}</div>}
                     {e.file_url && (
-                      <div style={{ fontSize: '0.75rem', color: '#38bdf8', marginBottom: 6 }}>
+                      <div style={{ fontSize: '0.75rem', color: '#0284c7', marginBottom: 6 }}>
                         <a href={e.file_url} target="_blank" rel="noreferrer">
                           📄 View Attached File Document
                         </a>
@@ -477,8 +481,8 @@ export const ServiceRequestDetailPage: React.FC = () => {
             )}
 
             {/* Evidence Uploader Form */}
-            <form onSubmit={handleUploadEvidence} style={{ borderTop: '1px solid var(--border-subtle)', paddingTop: 14 }}>
-              <div style={{ fontSize: '0.82rem', fontWeight: 600, color: '#f8fafc', marginBottom: 8 }}>
+            <form onSubmit={handleUploadEvidence} style={{ borderTop: '1px solid #e2e8f0', paddingTop: 14 }}>
+              <div style={{ fontSize: '0.82rem', fontWeight: 600, color: '#0f172a', marginBottom: 8 }}>
                 Upload Service Evidence
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: 8, marginBottom: 8 }}>
@@ -500,7 +504,7 @@ export const ServiceRequestDetailPage: React.FC = () => {
                 <input
                   type="file"
                   onChange={(e) => setSelectedFile(e.target.files ? e.target.files[0] : null)}
-                  style={{ fontSize: '0.8rem', color: '#94a3b8' }}
+                  style={{ fontSize: '0.8rem', color: '#64748b' }}
                 />
               </div>
               <button type="submit" disabled={uploading} className="btn btn-secondary btn-sm" style={{ width: '100%' }}>

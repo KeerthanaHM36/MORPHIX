@@ -15,8 +15,14 @@ export const LoginPage: React.FC = () => {
     setError(null);
     setLoading(true);
     try {
-      await login(email, password);
-      navigate('/');
+      const user = await login(email, password);
+      if (user.role === 'TECHNICIAN') {
+        navigate('/technician-portal');
+      } else if (user.role === 'VIEWER') {
+        navigate('/customer-portal');
+      } else {
+        navigate('/');
+      }
     } catch (err: any) {
       setError(err.response?.data?.detail || 'Authentication failed. Please verify credentials.');
     } finally {

@@ -78,6 +78,67 @@ def create_technician(
     item.user_email = user.email
     return item
 
+@router.get("/me/assignments")
+def get_my_technician_assignments(
+    technician_id: Optional[UUID] = None,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Returns assignments allocated to the current technician.
+    If technician_id is provided or current user has technician profile, filters by that technician.
+    Otherwise defaults to T1 (Marcus Cole) for rapid testing.
+    """
+    tech = None
+    if technician_id:
+        tech = db.query(Technician).filter(Technician.id == technician_id).first()
+    if not tech:
+        tech = db.query(Technician).filter(Technician.user_id == current_user.id).first()
+    if not tech:
+        tech = db.query(Technician).filter(Technician.employee_code == "T1").first()
+
+    if not tech:
+        return []
+
+    from app.models import Assignment
+    assignments = db.query(Assignment).filter(
+        Assignment.technician_id == tech.id
+    ).order_by(Assignment.created_at.desc()).all()
+
+    result = []
+    for a in assignments:
+        req = a.service_request
+        machine = req.machine if req else None
+        site = req.site if req else None
+        result.append({
+            "id": a.id,
+            "service_request_id": a.service_request_id,
+            "technician_id": a.technician_id,
+            "assignment_status": a.assignment_status,
+            "scheduled_start": a.scheduled_start,
+            "scheduled_end": a.scheduled_end,
+            "travel_distance_km": float(a.travel_distance_km or 0),
+            "travel_duration_minutes": a.travel_duration_minutes,
+            "assignment_score": float(a.assignment_score or 90),
+            "assigned_at": a.assigned_at,
+            "technician_name": tech.user.name if tech.user else tech.employee_code,
+            "technician_code": tech.employee_code,
+            "technician_phone": tech.user.phone if tech.user else "+1-555-0199",
+            "technician_lat": float(tech.current_latitude or 42.335),
+            "technician_lng": float(tech.current_longitude or -83.050),
+            "request_title": req.title if req else "Service Request",
+            "request_code": req.request_code if req else "SR-1000",
+            "request_priority": req.priority if req else "MEDIUM",
+            "request_description": req.description if req else "",
+            "machine_name": machine.name if machine else "Machine",
+            "machine_code": machine.machine_code if machine else "",
+            "site_name": site.name if site else "Site",
+            "site_address": site.address if site else "",
+            "site_lat": float(site.latitude or 42.3314) if site else 42.3314,
+            "site_lng": float(site.longitude or -83.0458) if site else -83.0458,
+        })
+    return result
+
 @router.get("/{technician_id}", response_model=TechnicianResponse)
 def get_technician(technician_id: UUID, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     t = db.query(Technician).filter(Technician.id == technician_id).first()

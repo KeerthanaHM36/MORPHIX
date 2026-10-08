@@ -306,3 +306,59 @@ export interface AuditLogItem {
   created_at: string;
   user_name?: string;
 }
+
+export interface AllocatedTechnicianDetails {
+  technician_id: string;
+  user_id?: string;
+  name: string;
+  employee_code: string;
+  specialization?: string;
+  experience_years: number;
+  phone?: string;
+  email?: string;
+  availability_status: string;
+  match_score: number;
+  score_breakdown?: any;
+  estimated_distance_km: number;
+  current_latitude?: number;
+  current_longitude?: number;
+  skills?: Array<{ skill_name: string; proficiency: number }>;
+}
+
+export interface ServiceRequestTrackingResponse {
+  service_request: ServiceRequest;
+  assignment_id?: string;
+  assignment_status?: string;
+  allocated_technician?: AllocatedTechnicianDetails;
+  site_latitude?: number;
+  site_longitude?: number;
+  site_name?: string;
+  site_address?: string;
+  machine_name?: string;
+  machine_code?: string;
+  distance_km?: number;
+  status_history?: any[];
+  reallocated: boolean;
+  message?: string;
+}
+
+export interface CustomerRequestPayload {
+  machine_id: string;
+  title: string;
+  description?: string;
+  priority: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
+  skill_id?: string;
+  minimum_proficiency?: number;
+}
+
+export interface TechnicianActionResponse {
+  success: boolean;
+  action: string;
+  message: string;
+  assignment_id: string;
+  service_request_id: string;
+  reallocated: boolean;
+  new_technician_name?: string;
+  new_technician_code?: string;
+  new_assignment_id?: string;
+}

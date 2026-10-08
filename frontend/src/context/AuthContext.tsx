@@ -5,7 +5,7 @@ import { authAPI } from '../services/api';
 interface AuthContextType {
   user: User | null;
   token: string | null;
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<User>;
   logout: () => void;
   isLoading: boolean;
 }
@@ -35,11 +35,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     initAuth();
   }, []);
 
-  const login = async (email: string, password: string) => {
+  const login = async (email: string, password: string): Promise<User> => {
     const data = await authAPI.login(email, password);
     localStorage.setItem('morphix_token', data.access_token);
     setToken(data.access_token);
     setUser(data.user);
+    return data.user;
   };
 
   const logout = () => {

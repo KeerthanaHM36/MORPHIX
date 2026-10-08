@@ -46,10 +46,10 @@ export const TechniciansPage: React.FC = () => {
     <div className="page-wrapper">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
         <div>
-          <h1 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#f8fafc' }}>
+          <h1 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#0f172a' }}>
             Field Technicians & Skills Matrix
           </h1>
-          <p style={{ fontSize: '0.85rem', color: '#94a3b8' }}>
+          <p style={{ fontSize: '0.85rem', color: '#64748b' }}>
             Qualified industrial specialists, real-time workload ratios & technical competency
           </p>
         </div>
@@ -58,7 +58,7 @@ export const TechniciansPage: React.FC = () => {
       {/* Filter */}
       <div className="card" style={{ marginBottom: 20, padding: '14px 20px', display: 'flex', gap: 16 }}>
         <div>
-          <label style={{ fontSize: '0.75rem', color: '#94a3b8', display: 'block', marginBottom: 4 }}>Filter by Status</label>
+          <label style={{ fontSize: '0.75rem', color: '#475569', fontWeight: 600, display: 'block', marginBottom: 4 }}>Filter by Status</label>
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
@@ -76,31 +76,31 @@ export const TechniciansPage: React.FC = () => {
       {/* Technicians Grid */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: 18 }}>
         {loading ? (
-          <div style={{ padding: 40, color: '#94a3b8' }}>Loading field technicians...</div>
+          <div style={{ padding: 40, color: '#64748b' }}>Loading field technicians...</div>
         ) : (
           technicians.map((t) => (
             <div key={t.id} className="card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
               <div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
-                  <span className="font-mono" style={{ fontSize: '0.9rem', fontWeight: 800, color: '#06b6d4' }}>
+                  <span className="font-mono" style={{ fontSize: '0.9rem', fontWeight: 800, color: '#0284c7' }}>
                     {t.employee_code}
                   </span>
                   <StatusBadge status={t.availability_status} />
                 </div>
 
-                <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#f8fafc', marginBottom: 2 }}>
+                <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#0f172a', marginBottom: 2 }}>
                   {t.user_name || 'Technician'}
                 </h3>
-                <div style={{ fontSize: '0.82rem', color: '#38bdf8', marginBottom: 8 }}>
+                <div style={{ fontSize: '0.82rem', color: '#0284c7', fontWeight: 600, marginBottom: 8 }}>
                   {t.specialization}
                 </div>
-                <div style={{ fontSize: '0.78rem', color: '#94a3b8', marginBottom: 12 }}>
+                <div style={{ fontSize: '0.78rem', color: '#64748b', marginBottom: 12 }}>
                   Experience: {t.experience_years} years • Workload: {t.current_workload} / {t.max_daily_jobs} active jobs
                 </div>
 
                 {/* Skills tags */}
                 <div style={{ marginBottom: 14 }}>
-                  <div style={{ fontSize: '0.72rem', color: '#64748b', textTransform: 'uppercase', marginBottom: 6, fontWeight: 600 }}>
+                  <div style={{ fontSize: '0.72rem', color: '#64748b', textTransform: 'uppercase', marginBottom: 6, fontWeight: 700 }}>
                     Certified Competencies
                   </div>
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
@@ -110,11 +110,12 @@ export const TechniciansPage: React.FC = () => {
                           key={s.skill_id}
                           style={{
                             padding: '3px 8px',
-                            backgroundColor: 'rgba(255,255,255,0.04)',
-                            border: '1px solid var(--border-subtle)',
+                            backgroundColor: '#f1f5f9',
+                            border: '1px solid #e2e8f0',
                             borderRadius: 4,
                             fontSize: '0.75rem',
-                            color: '#cbd5e1',
+                            color: '#334155',
+                            fontWeight: 500,
                           }}
                         >
                           {s.skill_name} ({s.proficiency_level}/5) {s.certified && '★'}
@@ -127,7 +128,7 @@ export const TechniciansPage: React.FC = () => {
                 </div>
               </div>
 
-              <div style={{ borderTop: '1px solid var(--border-subtle)', paddingTop: 12 }}>
+              <div style={{ borderTop: '1px solid #e2e8f0', paddingTop: 12 }}>
                 <button
                   onClick={() => handleToggleAvailability(t)}
                   className={`btn ${t.availability_status === 'AVAILABLE' ? 'btn-danger' : 'btn-secondary'} btn-sm`}

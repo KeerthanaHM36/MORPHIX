@@ -55,15 +55,15 @@ def seed_database():
         role="DISPATCHER",
         is_active=True
     )
-    viewer_user = User(
-        name="David Ross (Plant Executive)",
-        email="viewer@morphix.io",
+    customer_user = User(
+        name="Apex Plant Client (Customer)",
+        email="customer@morphix.io",
         password_hash=hashed_password,
-        phone="+1-555-0103",
+        phone="+1-555-0104",
         role="VIEWER",
         is_active=True
     )
-    db.add_all([admin_user, manager_user, dispatcher_user, viewer_user])
+    db.add_all([admin_user, manager_user, dispatcher_user, viewer_user, customer_user])
     db.flush()
 
     # 2. ORGANIZATION

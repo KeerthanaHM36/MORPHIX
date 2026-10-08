@@ -108,10 +108,10 @@ export const SimulationLabPage: React.FC = () => {
     <div className="page-wrapper">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
         <div>
-          <h1 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#f8fafc' }}>
+          <h1 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#0f172a' }}>
             Simulation Lab — Counterfactual "What-If" Analysis
           </h1>
-          <p style={{ fontSize: '0.85rem', color: '#94a3b8' }}>
+          <p style={{ fontSize: '0.85rem', color: '#64748b' }}>
             Simulate operational disruptions without altering live production state
           </p>
         </div>
@@ -134,20 +134,20 @@ export const SimulationLabPage: React.FC = () => {
               className="card"
               style={{
                 cursor: 'pointer',
-                borderColor: isSelected ? '#06b6d4' : 'var(--border-subtle)',
-                backgroundColor: isSelected ? 'rgba(6, 182, 212, 0.08)' : 'var(--bg-surface)',
+                borderColor: isSelected ? '#2563eb' : '#e2e8f0',
+                backgroundColor: isSelected ? '#eff6ff' : '#ffffff',
               }}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-                <span className="font-mono" style={{ fontSize: '0.75rem', color: '#38bdf8', fontWeight: 700 }}>
+                <span className="font-mono" style={{ fontSize: '0.75rem', color: '#0284c7', fontWeight: 700 }}>
                   {scen.scenario_type.replace(/_/g, ' ')}
                 </span>
                 <StatusBadge status={scen.status} />
               </div>
-              <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#f8fafc', marginBottom: 4 }}>
+              <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#0f172a', marginBottom: 4 }}>
                 {scen.name}
               </h3>
-              <p style={{ fontSize: '0.8rem', color: '#94a3b8', lineHeight: 1.4 }}>
+              <p style={{ fontSize: '0.8rem', color: '#475569', lineHeight: 1.4 }}>
                 {scen.description}
               </p>
               <div style={{ fontSize: '0.72rem', color: '#64748b', marginTop: 10 }}>
@@ -167,14 +167,15 @@ export const SimulationLabPage: React.FC = () => {
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            backgroundColor: 'rgba(255,255,255,0.02)',
+            backgroundColor: '#ffffff',
+            border: '1px solid #e2e8f0',
           }}
         >
           <div>
-            <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#f8fafc' }}>
+            <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#0f172a' }}>
               Active Scenario: {activeScenario.name}
             </h3>
-            <p style={{ fontSize: '0.85rem', color: '#94a3b8' }}>
+            <p style={{ fontSize: '0.85rem', color: '#64748b' }}>
               Type: {activeScenario.scenario_type} • Status: {activeScenario.status}
             </p>
           </div>
@@ -199,37 +200,39 @@ export const SimulationLabPage: React.FC = () => {
               className="card"
               style={{
                 borderLeft: '4px solid #10b981',
-                backgroundColor: 'rgba(16, 185, 129, 0.03)',
+                backgroundColor: '#f0fdf4',
+                border: '1px solid #bbf7d0',
+                borderLeftWidth: '4px',
               }}
             >
               <div className="card-header">
-                <span className="card-title" style={{ color: '#10b981' }}>
+                <span className="card-title" style={{ color: '#059669' }}>
                   🟢 Current Production State
                 </span>
                 <span className="badge badge-success">Live Baseline</span>
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 14 }}>
                 <div>
-                  <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>Total Active Work Orders</span>
-                  <div style={{ fontSize: '1.4rem', fontWeight: 700 }}>
+                  <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Total Active Work Orders</span>
+                  <div style={{ fontSize: '1.4rem', fontWeight: 700, color: '#0f172a' }}>
                     {simulationResult.current_state?.total_active_jobs}
                   </div>
                 </div>
                 <div>
-                  <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>Available Technicians</span>
-                  <div style={{ fontSize: '1.4rem', fontWeight: 700, color: '#10b981' }}>
+                  <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Available Technicians</span>
+                  <div style={{ fontSize: '1.4rem', fontWeight: 700, color: '#059669' }}>
                     {simulationResult.current_state?.available_technicians}
                   </div>
                 </div>
                 <div>
-                  <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>Active Dispatches</span>
-                  <div style={{ fontSize: '1.4rem', fontWeight: 700 }}>
+                  <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Active Dispatches</span>
+                  <div style={{ fontSize: '1.4rem', fontWeight: 700, color: '#0f172a' }}>
                     {simulationResult.current_state?.total_assigned_jobs}
                   </div>
                 </div>
                 <div>
-                  <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>Average Team Workload</span>
-                  <div style={{ fontSize: '1.4rem', fontWeight: 700 }}>
+                  <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Average Team Workload</span>
+                  <div style={{ fontSize: '1.4rem', fontWeight: 700, color: '#0f172a' }}>
                     {simulationResult.current_state?.average_workload} jobs
                   </div>
                 </div>
@@ -241,37 +244,39 @@ export const SimulationLabPage: React.FC = () => {
               className="card"
               style={{
                 borderLeft: '4px solid #f59e0b',
-                backgroundColor: 'rgba(245, 158, 11, 0.03)',
+                backgroundColor: '#fffbeb',
+                border: '1px solid #fde68a',
+                borderLeftWidth: '4px',
               }}
             >
               <div className="card-header">
-                <span className="card-title" style={{ color: '#fbbf24' }}>
+                <span className="card-title" style={{ color: '#d97706' }}>
                   🟡 Counterfactual Simulated State
                 </span>
                 <span className="badge badge-warning">Simulated Outcome</span>
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 14 }}>
                 <div>
-                  <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>Disrupted Assignments</span>
-                  <div style={{ fontSize: '1.4rem', fontWeight: 700, color: '#ef4444' }}>
+                  <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Disrupted Assignments</span>
+                  <div style={{ fontSize: '1.4rem', fontWeight: 700, color: '#dc2626' }}>
                     {simulationResult.simulated_state?.disrupted_assignments}
                   </div>
                 </div>
                 <div>
-                  <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>Simulated Available Techs</span>
-                  <div style={{ fontSize: '1.4rem', fontWeight: 700, color: '#f59e0b' }}>
+                  <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Simulated Available Techs</span>
+                  <div style={{ fontSize: '1.4rem', fontWeight: 700, color: '#d97706' }}>
                     {simulationResult.simulated_state?.simulated_available_technicians}
                   </div>
                 </div>
                 <div>
-                  <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>Contractual SLA Impact</span>
-                  <div style={{ fontSize: '1.4rem', fontWeight: 700, color: '#ef4444' }}>
+                  <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Contractual SLA Impact</span>
+                  <div style={{ fontSize: '1.4rem', fontWeight: 700, color: '#dc2626' }}>
                     {simulationResult.simulated_state?.simulated_sla_risk_increase}
                   </div>
                 </div>
                 <div>
-                  <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>Impacted Job Orders</span>
-                  <div style={{ fontSize: '1.4rem', fontWeight: 700, color: '#38bdf8' }}>
+                  <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Impacted Job Orders</span>
+                  <div style={{ fontSize: '1.4rem', fontWeight: 700, color: '#0284c7' }}>
                     {simulationResult.impact_analysis?.impacted_jobs_count}
                   </div>
                 </div>
@@ -281,17 +286,17 @@ export const SimulationLabPage: React.FC = () => {
 
           {/* Impact Analysis & Conflicts */}
           <div className="card">
-            <h3 className="card-title">Disruption Analysis & Resource Conflicts</h3>
+            <h3 className="card-title" style={{ color: '#0f172a' }}>Disruption Analysis & Resource Conflicts</h3>
             <div style={{ marginTop: 12 }}>
               {simulationResult.impact_analysis?.conflicts?.map((conf: string, i: number) => (
                 <div
                   key={i}
                   style={{
                     padding: '10px 14px',
-                    backgroundColor: 'rgba(239, 68, 68, 0.08)',
-                    border: '1px solid rgba(239, 68, 68, 0.25)',
+                    backgroundColor: '#fef2f2',
+                    border: '1px solid #fecaca',
                     borderRadius: 6,
-                    color: '#f87171',
+                    color: '#dc2626',
                     fontSize: '0.88rem',
                     marginBottom: 8,
                   }}
@@ -304,10 +309,10 @@ export const SimulationLabPage: React.FC = () => {
 
           {/* Recommended Counterfactual Recovery Plans */}
           <div className="card">
-            <h3 className="card-title" style={{ color: '#38bdf8' }}>
+            <h3 className="card-title" style={{ color: '#0284c7' }}>
               🧠 Pre-Simulated Autonomous Recovery Recommendations
             </h3>
-            <p style={{ fontSize: '0.8rem', color: '#94a3b8', marginBottom: 16 }}>
+            <p style={{ fontSize: '0.8rem', color: '#64748b', marginBottom: 16 }}>
               Action plan ready for dispatcher execution if this counterfactual event materializes
             </p>
 
@@ -317,21 +322,21 @@ export const SimulationLabPage: React.FC = () => {
                   key={idx}
                   style={{
                     padding: 16,
-                    backgroundColor: 'var(--bg-surface-elevated)',
-                    border: '1px solid var(--border-medium)',
+                    backgroundColor: '#f8fafc',
+                    border: '1px solid #e2e8f0',
                     borderRadius: 8,
                   }}
                 >
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
-                    <span className="font-mono" style={{ fontSize: '0.75rem', color: '#06b6d4', fontWeight: 700 }}>
+                    <span className="font-mono" style={{ fontSize: '0.75rem', color: '#0284c7', fontWeight: 700 }}>
                       {rec.strategy}
                     </span>
                     <span className="badge badge-success">Match: {rec.simulated_score}%</span>
                   </div>
-                  <h4 style={{ fontSize: '1rem', fontWeight: 700, color: '#f8fafc', marginBottom: 6 }}>
+                  <h4 style={{ fontSize: '1rem', fontWeight: 700, color: '#0f172a', marginBottom: 6 }}>
                     {rec.job_code} ➔ {rec.proposed_technician}
                   </h4>
-                  <div style={{ fontSize: '0.8rem', color: '#cbd5e1', display: 'flex', gap: 14 }}>
+                  <div style={{ fontSize: '0.8rem', color: '#475569', display: 'flex', gap: 14 }}>
                     <span>⏱ Est. Delay: +{rec.simulated_delay_minutes}m</span>
                     <span>🛡 SLA Outlook: {rec.sla_outlook}</span>
                   </div>
@@ -348,7 +353,7 @@ export const SimulationLabPage: React.FC = () => {
           style={{
             position: 'fixed',
             inset: 0,
-            backgroundColor: 'rgba(0,0,0,0.7)',
+            backgroundColor: 'rgba(15, 23, 42, 0.6)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -356,10 +361,10 @@ export const SimulationLabPage: React.FC = () => {
             padding: 20,
           }}
         >
-          <div className="card" style={{ width: '100%', maxWidth: 520 }}>
+          <div className="card" style={{ width: '100%', maxWidth: 520, backgroundColor: '#ffffff', boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)' }}>
             <div className="card-header">
-              <span className="card-title">New Counterfactual Scenario</span>
-              <button onClick={() => setShowCreateModal(false)} style={{ color: '#94a3b8', fontSize: '1.2rem' }}>
+              <span className="card-title" style={{ color: '#0f172a' }}>New Counterfactual Scenario</span>
+              <button onClick={() => setShowCreateModal(false)} style={{ color: '#64748b', fontSize: '1.2rem', background: 'none', border: 'none', cursor: 'pointer' }}>
                 ✕
               </button>
             </div>

@@ -7,11 +7,15 @@ from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.core.dependencies import get_current_user, require_roles
 from app.models import Assignment, ServiceRequest, Technician, ServiceTask, User
-from app.schemas.assignment import AssignmentCreate, AssignmentUpdate, AssignmentResponse
+from app.schemas.assignment import (
+    AssignmentCreate, AssignmentUpdate, AssignmentResponse,
+    TechnicianRejectRequest, TechnicianActionResponse
+)
 from app.intelligence.technician_matcher import TechnicianMatcher
 from app.intelligence.optimizer import OperationalOptimizer
 from app.services.audit_service import AuditService
 from app.services.notification_service import NotificationService
+from app.services.auto_dispatch_service import AutoDispatchService
 
 router = APIRouter(prefix="/assignments", tags=["Assignments"])
 
@@ -197,3 +201,131 @@ def update_assignment(
     )
 
     return enrich_assignment(assgn)
+
+
+@router.post("/{assignment_id}/accept", response_model=TechnicianActionResponse)
+def accept_assignment(
+    assignment_id: UUID,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Technician accepts the AI-allocated service request.
+    Transitions status to ACCEPTED / IN_PROGRESS.
+    """
+    assgn = db.query(Assignment).filter(Assignment.id == assignment_id).first()
+    if not assgn:
+        raise HTTPException(status_code=404, detail="Assignment not found")
+
+    assgn.assignment_status = "CONFIRMED"
+    assgn.actual_start = datetime.now(timezone.utc)
+    if assgn.service_request:
+        assgn.service_request.status = "IN_PROGRESS"
+
+    db.commit()
+    db.refresh(assgn)
+
+    AuditService.log(
+        db=db,
+        action="ACCEPT_ASSIGNMENT",
+        entity_type="ASSIGNMENT",
+        entity_id=assgn.id,
+        user_id=current_user.id,
+        new_values={"status": "CONFIRMED"}
+    )
+
+    return TechnicianActionResponse(
+        success=True,
+        action="ACCEPTED",
+        message="Service allocation accepted by technician. Work order is now actively underway.",
+        assignment_id=assgn.id,
+        service_request_id=assgn.service_request_id,
+        reallocated=False
+    )
+
+
+@router.post("/{assignment_id}/reject", response_model=TechnicianActionResponse)
+def reject_assignment(
+    assignment_id: UUID,
+    payload: Optional[TechnicianRejectRequest] = None,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Technician rejects the AI-allocated service request.
+    The rejecting technician is released to AVAILABLE.
+    The AI model automatically reallocates the service request to the next best available qualified technician.
+    Guarantees no technician is double-booked and no two technicians share one request.
+    """
+    assgn = db.query(Assignment).filter(Assignment.id == assignment_id).first()
+    if not assgn:
+        raise HTTPException(status_code=404, detail="Assignment not found")
+
+    s_req = assgn.service_request
+    rejecting_tech = assgn.technician
+
+    # 1. Mark current assignment REASSIGNED
+    assgn.assignment_status = "REASSIGNED"
+
+    # 2. Release the rejecting technician back to AVAILABLE
+    if rejecting_tech:
+        rejecting_tech.availability_status = "AVAILABLE"
+        rejecting_tech.current_workload = max(0, rejecting_tech.current_workload - 1)
+
+    db.flush()
+
+    # 3. Find all technicians who have previously rejected this request
+    rejected_ids = [
+        row[0] for row in db.query(Assignment.technician_id).filter(
+            Assignment.service_request_id == s_req.id,
+            Assignment.assignment_status.in_(["REASSIGNED", "CANCELLED"])
+        ).all()
+    ]
+
+    # 4. AI model reallocates to next best qualified available technician
+    alloc_result = AutoDispatchService.allocate_technician(
+        db=db,
+        service_request=s_req,
+        exclude_technician_ids=rejected_ids,
+        assigned_by_user_id=current_user.id
+    )
+
+    db.commit()
+
+    AuditService.log(
+        db=db,
+        action="REJECT_ASSIGNMENT",
+        entity_type="ASSIGNMENT",
+        entity_id=assgn.id,
+        user_id=current_user.id,
+        new_values={
+            "reason": payload.reason if payload else "Technician rejected allocation",
+            "reallocated": alloc_result is not None
+        }
+    )
+
+    if alloc_result:
+        new_assgn, new_tech, candidate_info = alloc_result
+        return TechnicianActionResponse(
+            success=True,
+            action="REJECTED",
+            message=f"Allocation rejected. AI model has automatically reallocated the request to {new_tech.user.name} ({new_tech.employee_code}).",
+            assignment_id=assgn.id,
+            service_request_id=s_req.id,
+            reallocated=True,
+            new_technician_name=new_tech.user.name,
+            new_technician_code=new_tech.employee_code,
+            new_assignment_id=new_assgn.id
+        )
+    else:
+        # Revert request to OPEN for manual intervention
+        s_req.status = "OPEN"
+        db.commit()
+        return TechnicianActionResponse(
+            success=True,
+            action="REJECTED",
+            message="Allocation rejected. No other available technicians with required skills found at this time.",
+            assignment_id=assgn.id,
+            service_request_id=s_req.id,
+            reallocated=False
+        )

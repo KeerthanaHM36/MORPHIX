@@ -107,8 +107,8 @@ export const ServiceRequestsPage: React.FC = () => {
     <div className="page-wrapper">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
         <div>
-          <h1 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#f8fafc' }}>Service Requests Lifecycle</h1>
-          <p style={{ fontSize: '0.85rem', color: '#94a3b8' }}>
+          <h1 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#0f172a' }}>Service Requests Lifecycle</h1>
+          <p style={{ fontSize: '0.85rem', color: '#64748b' }}>
             Multi-stage work order tracking, skill certification matching & SLA monitoring
           </p>
         </div>
@@ -120,7 +120,7 @@ export const ServiceRequestsPage: React.FC = () => {
       {/* Filters Bar */}
       <div className="card" style={{ marginBottom: 20, padding: '14px 20px', display: 'flex', gap: 16 }}>
         <div>
-          <label style={{ fontSize: '0.75rem', color: '#94a3b8', display: 'block', marginBottom: 4 }}>Status Filter</label>
+          <label style={{ fontSize: '0.75rem', color: '#475569', fontWeight: 600, display: 'block', marginBottom: 4 }}>Status Filter</label>
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
@@ -137,7 +137,7 @@ export const ServiceRequestsPage: React.FC = () => {
         </div>
 
         <div>
-          <label style={{ fontSize: '0.75rem', color: '#94a3b8', display: 'block', marginBottom: 4 }}>Priority Filter</label>
+          <label style={{ fontSize: '0.75rem', color: '#475569', fontWeight: 600, display: 'block', marginBottom: 4 }}>Priority Filter</label>
           <select
             value={priorityFilter}
             onChange={(e) => setPriorityFilter(e.target.value)}
@@ -172,7 +172,7 @@ export const ServiceRequestsPage: React.FC = () => {
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan={8} style={{ textAlign: 'center', padding: 30, color: '#94a3b8' }}>
+                  <td colSpan={8} style={{ textAlign: 'center', padding: 30, color: '#64748b' }}>
                     Loading service records...
                   </td>
                 </tr>
@@ -185,17 +185,17 @@ export const ServiceRequestsPage: React.FC = () => {
               ) : (
                 requests.map((r) => (
                   <tr key={r.id}>
-                    <td className="font-mono" style={{ fontWeight: 700, color: '#38bdf8' }}>
+                    <td className="font-mono" style={{ fontWeight: 700, color: '#0284c7' }}>
                       {r.request_code}
                     </td>
                     <td>
-                      <div style={{ fontWeight: 600, color: '#f8fafc' }}>{r.title}</div>
-                      <div style={{ fontSize: '0.78rem', color: '#94a3b8', maxWidth: 360, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      <div style={{ fontWeight: 700, color: '#0f172a' }}>{r.title}</div>
+                      <div style={{ fontSize: '0.78rem', color: '#64748b', maxWidth: 360, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                         {r.description}
                       </div>
                     </td>
-                    <td style={{ fontSize: '0.85rem' }}>{r.machine_name}</td>
-                    <td style={{ fontSize: '0.85rem', color: '#cbd5e1' }}>{r.site_name}</td>
+                    <td style={{ fontSize: '0.85rem', color: '#0f172a', fontWeight: 600 }}>{r.machine_name}</td>
+                    <td style={{ fontSize: '0.85rem', color: '#475569' }}>{r.site_name}</td>
                     <td>
                       <StatusBadge status={r.priority} type="priority" />
                     </td>
@@ -205,7 +205,7 @@ export const ServiceRequestsPage: React.FC = () => {
                     <td>
                       <StatusBadge status={r.sla_status || 'SAFE'} type="sla" />
                       {r.sla_remaining_minutes !== undefined && (
-                        <div style={{ fontSize: '0.72rem', color: '#94a3b8', marginTop: 2 }}>
+                        <div style={{ fontSize: '0.72rem', color: '#64748b', marginTop: 2 }}>
                           {r.sla_remaining_minutes > 0 ? `${r.sla_remaining_minutes} min remaining` : 'Breached'}
                         </div>
                       )}
@@ -368,8 +368,8 @@ export const ServiceRequestsPage: React.FC = () => {
               </div>
 
               {/* Required Skills & Parts Sub-Selectors */}
-              <div style={{ padding: '12px', backgroundColor: 'rgba(255,255,255,0.02)', borderRadius: 8, marginBottom: 16 }}>
-                <div style={{ fontSize: '0.8rem', fontWeight: 600, color: '#38bdf8', marginBottom: 8 }}>
+              <div style={{ padding: '14px', backgroundColor: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 8, marginBottom: 16 }}>
+                <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#0284c7', marginBottom: 8 }}>
                   Required Skill Competency & Spare Parts Specification
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 10, marginBottom: 10 }}>

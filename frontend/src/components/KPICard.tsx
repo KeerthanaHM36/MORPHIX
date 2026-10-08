@@ -20,13 +20,15 @@ export const KPICard: React.FC<KPICardProps> = ({
       className={`card ${isAlert ? 'pulse-critical' : ''}`}
       style={{
         borderLeft: `4px solid ${accentColor}`,
-        background: 'linear-gradient(180deg, rgba(255,255,255,0.02) 0%, rgba(17,24,39,0.95) 100%)',
+        backgroundColor: '#ffffff',
+        border: '1px solid #e2e8f0',
+        borderLeftWidth: '4px',
       }}
     >
-      <div style={{ fontSize: '0.8rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>
+      <div style={{ fontSize: '0.8rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>
         {title}
       </div>
-      <div style={{ fontSize: '2rem', fontWeight: 700, margin: '8px 0 4px', color: '#f8fafc', fontFamily: 'var(--font-mono)' }}>
+      <div style={{ fontSize: '2rem', fontWeight: 700, margin: '8px 0 4px', color: '#0f172a', fontFamily: 'var(--font-mono)' }}>
         {value}
       </div>
       {subtitle && (

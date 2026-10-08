@@ -1,174 +1,162 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { techniciansAPI, notificationsAPI } from '../services/api';
 import { NotificationDrawer } from './NotificationDrawer';
 
 export const Navbar: React.FC = () => {
-  const { user, logout } = useAuth();
-  const [unreadCount, setUnreadCount] = useState<number>(0);
-  const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
-  const [triggering, setTriggering] = useState<boolean>(false);
-
-  const fetchNotificationCount = async () => {
-    try {
-      const list = await notificationsAPI.list();
-      setUnreadCount(list.filter((n) => !n.is_read).length);
-    } catch {
-      // ignore
-    }
-  };
-
-  useEffect(() => {
-    fetchNotificationCount();
-    const interval = setInterval(fetchNotificationCount, 15000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const handleTriggerDemoDisruption = async () => {
-    setTriggering(true);
-    try {
-      // Find T1
-      const techs = await techniciansAPI.list();
-      const t1 = techs.find((t) => t.employee_code === 'T1') || techs[0];
-      if (t1) {
-        await techniciansAPI.triggerUnavailable(
-          t1.id,
-          'Sudden transit breakdown on Highway I-75 while dispatched to M-104 Hydraulic Press'
-        );
-        fetchNotificationCount();
-        alert('ALERT: Disruption Triggered! Technician T1 marked unavailable. MORPHIX resilience engine has detected the disruption, created an Exception, and calculated recovery options. Refreshing dashboard.');
-        window.location.reload();
-      }
-    } catch (err: any) {
-      alert('Error triggering disruption: ' + (err.response?.data?.detail || err.message));
-    } finally {
-      setTriggering(false);
-    }
-  };
+  const { user } = useAuth();
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
 
   return (
     <>
       <header
         style={{
           height: 64,
-          backgroundColor: '#0d1322',
-          borderBottom: '1px solid var(--border-subtle)',
-          padding: '0 24px',
+          backgroundColor: '#f0f4f9',
+          borderBottom: '1px solid #e2e8f0',
+          padding: '0 32px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
           zIndex: 10,
+          flexShrink: 0,
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <span
-              style={{
-                width: 10,
-                height: 10,
-                borderRadius: '50%',
-                backgroundColor: '#10b981',
-                boxShadow: '0 0 10px #10b981',
-              }}
-            />
-            <span style={{ fontSize: '1.25rem', fontWeight: 800, letterSpacing: '-0.02em', color: '#f8fafc' }}>
-              MORPHIX
-            </span>
-          </div>
+        {/* Search Bar */}
+        <div style={{ position: 'relative', width: '420px' }}>
           <span
             style={{
-              padding: '2px 8px',
-              backgroundColor: 'rgba(6, 182, 212, 0.1)',
-              border: '1px solid rgba(6, 182, 212, 0.3)',
-              borderRadius: 4,
-              fontSize: '0.7rem',
-              fontWeight: 600,
-              color: '#38bdf8',
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
+              position: 'absolute',
+              left: '14px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              color: '#94a3b8',
+              fontSize: '14px',
             }}
           >
-            Industrial Resilience OS
+            🔍
           </span>
-          <span style={{ fontSize: '0.8rem', color: '#64748b', fontStyle: 'italic', display: 'none' }}>
-            "See the disruption. Simulate the future. Orchestrate the recovery."
-          </span>
+          <input
+            type="text"
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            placeholder="Search service requests, machines, technicians, parts..."
+            style={{
+              width: '100%',
+              padding: '9px 16px 9px 38px',
+              backgroundColor: '#ffffff',
+              border: '1px solid #e2e8f0',
+              borderRadius: '10px',
+              fontSize: '13px',
+              color: '#0f172a',
+              outline: 'none',
+              boxShadow: '0 1px 2px rgba(0,0,0,0.03)',
+            }}
+          />
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-          {/* Quick Disruption Trigger Demo Button */}
-          <button
-            onClick={handleTriggerDemoDisruption}
-            disabled={triggering}
-            className="btn btn-danger btn-sm"
-            style={{ fontSize: '0.78rem', letterSpacing: '0.02em' }}
-            title="Simulate sudden T1 unavailable disruption on live SR-1001"
-          >
-            ⚡ {triggering ? 'Simulating...' : 'Simulate T1 Disruption'}
-          </button>
-
-          {/* Notifications Button */}
+        {/* Right Section: Notifications, Theme Icon, User Avatar */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 18 }}>
+          {/* Notification Bell */}
           <button
             onClick={() => setDrawerOpen(true)}
             style={{
               position: 'relative',
-              padding: '8px 12px',
-              backgroundColor: 'var(--bg-surface-elevated)',
-              border: '1px solid var(--border-medium)',
-              borderRadius: 6,
-              color: '#f8fafc',
-              fontSize: '0.85rem',
+              width: 38,
+              height: 38,
+              borderRadius: '50%',
+              backgroundColor: '#ffffff',
+              border: '1px solid #e2e8f0',
               display: 'flex',
               alignItems: 'center',
-              gap: 6,
+              justifyContent: 'center',
+              cursor: 'pointer',
+              boxShadow: '0 1px 2px rgba(0,0,0,0.03)',
             }}
+            title="Notifications"
           >
-            🔔
-            {unreadCount > 0 && (
-              <span
-                style={{
-                  backgroundColor: '#ef4444',
-                  color: '#fff',
-                  borderRadius: 10,
-                  fontSize: '0.7rem',
-                  fontWeight: 700,
-                  padding: '1px 6px',
-                }}
-              >
-                {unreadCount}
-              </span>
-            )}
+            <span style={{ fontSize: '15px' }}>🔔</span>
+            <span
+              style={{
+                position: 'absolute',
+                top: -2,
+                right: -2,
+                backgroundColor: '#ef4444',
+                color: '#ffffff',
+                borderRadius: '50%',
+                fontSize: '10px',
+                fontWeight: 700,
+                width: '16px',
+                height: '16px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                border: '2px solid #ffffff',
+              }}
+            >
+              3
+            </span>
           </button>
 
-          {/* User Profile */}
-          <div
+          {/* Sun / Theme Mode Toggle */}
+          <button
             style={{
+              width: 38,
+              height: 38,
+              borderRadius: '50%',
+              backgroundColor: '#ffffff',
+              border: '1px solid #e2e8f0',
               display: 'flex',
               alignItems: 'center',
-              gap: 10,
-              padding: '4px 12px',
-              backgroundColor: 'rgba(255,255,255,0.03)',
-              borderRadius: 8,
-              border: '1px solid var(--border-subtle)',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              fontSize: '15px',
+              color: '#64748b',
+              boxShadow: '0 1px 2px rgba(0,0,0,0.03)',
             }}
+            title="Toggle theme"
           >
-            <div style={{ textAlign: 'right' }}>
-              <div style={{ fontSize: '0.82rem', fontWeight: 600, color: '#f8fafc' }}>{user?.name}</div>
-              <div style={{ fontSize: '0.7rem', color: '#06b6d4', fontWeight: 600 }}>{user?.role}</div>
+            ☀️
+          </button>
+
+          {/* User Profile Info */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, paddingLeft: 6 }}>
+            <div
+              style={{
+                width: 38,
+                height: 38,
+                borderRadius: '50%',
+                backgroundColor: '#e0e7ff',
+                color: '#4338ca',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontWeight: 700,
+                fontSize: '13px',
+                border: '2px solid #ffffff',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+              }}
+            >
+              {user?.name ? user.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() : 'OP'}
+            </div>
+
+            <div>
+              <div style={{ fontSize: '13px', fontWeight: 700, color: '#0f172a', lineHeight: 1.2 }}>
+                {user?.name || 'Operations Lead'}
+              </div>
+              <div style={{ fontSize: '11px', color: '#64748b', fontWeight: 500 }}>
+                {user?.role ? `${user.role.charAt(0) + user.role.slice(1).toLowerCase()}` : 'Operations Manager'}
+              </div>
             </div>
           </div>
-
-          {/* Logout */}
-          <button onClick={logout} className="btn btn-secondary btn-sm" title="Log out of session">
-            Logout
-          </button>
         </div>
       </header>
 
+      {/* Notification Drawer */}
       <NotificationDrawer
         isOpen={drawerOpen}
         onClose={() => setDrawerOpen(false)}
-        onRefreshCount={fetchNotificationCount}
+        onRefreshCount={() => {}}
       />
     </>
   );

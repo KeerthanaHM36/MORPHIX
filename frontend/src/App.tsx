@@ -15,6 +15,7 @@ import { MachinesPage } from './pages/MachinesPage';
 import { InventoryPage } from './pages/InventoryPage';
 import { TechniciansPage } from './pages/TechniciansPage';
 import { AuditLogsPage } from './pages/AuditLogsPage';
+import { CustomerServicePortalPage } from './pages/CustomerServicePortalPage';
 
 const ProtectedLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user, isLoading } = useAuth();
@@ -58,6 +59,15 @@ export const App: React.FC = () => {
             }
           />
           
+          <Route
+            path="/customer-portal"
+            element={
+              <ProtectedLayout>
+                <CustomerServicePortalPage />
+              </ProtectedLayout>
+            }
+          />
+
           <Route
             path="/service-requests"
             element={

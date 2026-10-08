@@ -96,10 +96,10 @@ export const ExceptionsPage: React.FC = () => {
     <div className="page-wrapper">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
         <div>
-          <h1 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#f8fafc' }}>
+          <h1 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#0f172a' }}>
             Operational Resilience & Exception Center
           </h1>
-          <p style={{ fontSize: '0.85rem', color: '#94a3b8' }}>
+          <p style={{ fontSize: '0.85rem', color: '#64748b' }}>
             "See the disruption. Simulate the future. Orchestrate the recovery."
           </p>
         </div>
@@ -110,15 +110,15 @@ export const ExceptionsPage: React.FC = () => {
         className="card"
         style={{
           marginBottom: 24,
-          backgroundColor: 'rgba(239, 68, 68, 0.04)',
-          borderColor: 'rgba(239, 68, 68, 0.3)',
+          backgroundColor: '#fef2f2',
+          border: '1px solid #fecaca',
         }}
       >
         <div className="card-header">
-          <span className="card-title" style={{ color: '#f87171' }}>
+          <span className="card-title" style={{ color: '#dc2626' }}>
             ⚡ Live Disruption Injection & Resilience Testing
           </span>
-          <span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>
+          <span style={{ fontSize: '0.8rem', color: '#64748b' }}>
             Simulate realistic field shocks to evaluate autonomous recovery
           </span>
         </div>
@@ -156,13 +156,13 @@ export const ExceptionsPage: React.FC = () => {
         {/* Left Column: Exceptions Roster */}
         <div className="card">
           <div className="card-header">
-            <span className="card-title">🚨 Active Disruptions ({exceptions.length})</span>
+            <span className="card-title" style={{ color: '#0f172a' }}>🚨 Active Disruptions ({exceptions.length})</span>
           </div>
 
           {loading ? (
-            <div style={{ padding: 20, color: '#94a3b8' }}>Loading disruptions...</div>
+            <div style={{ padding: 20, color: '#64748b' }}>Loading disruptions...</div>
           ) : exceptions.length === 0 ? (
-            <div style={{ padding: 30, color: '#10b981', textAlign: 'center' }}>
+            <div style={{ padding: 30, color: '#10b981', textAlign: 'center', fontWeight: 600 }}>
               ✓ No disruptions recorded. System resilient.
             </div>
           ) : (
@@ -175,8 +175,8 @@ export const ExceptionsPage: React.FC = () => {
                     onClick={() => selectException(exc)}
                     style={{
                       padding: 14,
-                      backgroundColor: isSelected ? 'rgba(6, 182, 212, 0.12)' : 'var(--bg-surface-elevated)',
-                      border: isSelected ? '1px solid rgba(6, 182, 212, 0.5)' : '1px solid var(--border-subtle)',
+                      backgroundColor: isSelected ? '#eff6ff' : '#f8fafc',
+                      border: isSelected ? '1px solid #3b82f6' : '1px solid #e2e8f0',
                       borderRadius: 8,
                       cursor: 'pointer',
                       transition: 'all 0.15s ease',
@@ -186,10 +186,10 @@ export const ExceptionsPage: React.FC = () => {
                       <StatusBadge status={exc.severity} type="severity" />
                       <StatusBadge status={exc.status} type="status" />
                     </div>
-                    <div style={{ fontWeight: 700, fontSize: '0.92rem', color: '#f8fafc', marginBottom: 4 }}>
+                    <div style={{ fontWeight: 700, fontSize: '0.92rem', color: '#0f172a', marginBottom: 4 }}>
                       {exc.title}
                     </div>
-                    <div style={{ fontSize: '0.78rem', color: '#94a3b8', lineHeight: 1.3 }}>
+                    <div style={{ fontSize: '0.78rem', color: '#475569', lineHeight: 1.3 }}>
                       {exc.description}
                     </div>
                     <div style={{ fontSize: '0.72rem', color: '#64748b', marginTop: 8 }}>
@@ -206,17 +206,17 @@ export const ExceptionsPage: React.FC = () => {
         <div className="card">
           <div className="card-header">
             <div>
-              <span className="card-title" style={{ color: '#38bdf8' }}>
+              <span className="card-title" style={{ color: '#0284c7' }}>
                 🧠 AI Recovery Engine — Evaluated Alternatives
               </span>
-              <p style={{ fontSize: '0.8rem', color: '#94a3b8' }}>
+              <p style={{ fontSize: '0.8rem', color: '#64748b' }}>
                 {selectedException ? selectedException.title : 'Select a disruption to view candidate recovery options'}
               </p>
             </div>
           </div>
 
           {loadingPlans ? (
-            <div style={{ padding: 30, color: '#94a3b8' }}>Synthesizing recovery solutions...</div>
+            <div style={{ padding: 30, color: '#64748b' }}>Synthesizing recovery solutions...</div>
           ) : plans.length === 0 ? (
             <div style={{ padding: 30, color: '#64748b', textAlign: 'center' }}>
               No recovery plans generated for this record.
@@ -227,18 +227,18 @@ export const ExceptionsPage: React.FC = () => {
                 <div
                   key={p.id}
                   style={{
-                    backgroundColor: 'var(--bg-surface-elevated)',
-                    border: p.status === 'APPLIED' ? '1px solid #10b981' : idx === 0 ? '1px solid rgba(6, 182, 212, 0.4)' : '1px solid var(--border-subtle)',
+                    backgroundColor: '#f8fafc',
+                    border: p.status === 'APPLIED' ? '1px solid #10b981' : idx === 0 ? '1px solid #93c5fd' : '1px solid #e2e8f0',
                     borderRadius: 8,
                     padding: 16,
                   }}
                 >
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 6 }}>
                     <div>
-                      <span className="font-mono" style={{ fontSize: '0.75rem', fontWeight: 700, color: '#06b6d4', textTransform: 'uppercase' }}>
+                      <span className="font-mono" style={{ fontSize: '0.75rem', fontWeight: 700, color: '#0284c7', textTransform: 'uppercase' }}>
                         {p.strategy_type.replace(/_/g, ' ')}
                       </span>
-                      <h4 style={{ fontSize: '1rem', fontWeight: 700, color: '#f8fafc', marginTop: 2 }}>
+                      <h4 style={{ fontSize: '1rem', fontWeight: 700, color: '#0f172a', marginTop: 2 }}>
                         {p.plan_name}
                       </h4>
                     </div>
@@ -248,8 +248,9 @@ export const ExceptionsPage: React.FC = () => {
                         style={{
                           fontSize: '0.85rem',
                           fontWeight: 700,
-                          color: '#10b981',
-                          backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                          color: '#059669',
+                          backgroundColor: '#ecfdf5',
+                          border: '1px solid #a7f3d0',
                           padding: '3px 8px',
                           borderRadius: 4,
                         }}
@@ -262,11 +263,11 @@ export const ExceptionsPage: React.FC = () => {
                     </div>
                   </div>
 
-                  <p style={{ fontSize: '0.85rem', color: '#cbd5e1', lineHeight: 1.4, margin: '8px 0 12px' }}>
+                  <p style={{ fontSize: '0.85rem', color: '#334155', lineHeight: 1.4, margin: '8px 0 12px' }}>
                     {p.description}
                   </p>
 
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, fontSize: '0.8rem', color: '#94a3b8', backgroundColor: 'rgba(0,0,0,0.2)', padding: '8px 12px', borderRadius: 6, marginBottom: 14 }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, fontSize: '0.8rem', color: '#475569', backgroundColor: '#f1f5f9', padding: '8px 12px', borderRadius: 6, marginBottom: 14 }}>
                     <div>⏱ Delay: +{p.estimated_delay_minutes || 0}m</div>
                     <div>🚗 Travel: {p.estimated_travel_distance_km || 0} km</div>
                     <div>👷 Tech: {p.proposed_technician_name || 'Standard backup'}</div>

@@ -33,10 +33,10 @@ export const MachinesPage: React.FC = () => {
     <div className="page-wrapper">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
         <div>
-          <h1 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#f8fafc' }}>
+          <h1 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#0f172a' }}>
             Industrial Equipment & Assets
           </h1>
-          <p style={{ fontSize: '0.85rem', color: '#94a3b8' }}>
+          <p style={{ fontSize: '0.85rem', color: '#64748b' }}>
             Critical presses, CNC mills, robotic cells and compressors across industrial sites
           </p>
         </div>
@@ -45,7 +45,7 @@ export const MachinesPage: React.FC = () => {
       {/* Filters */}
       <div className="card" style={{ marginBottom: 20, padding: '14px 20px', display: 'flex', gap: 16 }}>
         <div>
-          <label style={{ fontSize: '0.75rem', color: '#94a3b8', display: 'block', marginBottom: 4 }}>Equipment Status</label>
+          <label style={{ fontSize: '0.75rem', color: '#475569', fontWeight: 600, display: 'block', marginBottom: 4 }}>Equipment Status</label>
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
@@ -61,7 +61,7 @@ export const MachinesPage: React.FC = () => {
         </div>
 
         <div>
-          <label style={{ fontSize: '0.75rem', color: '#94a3b8', display: 'block', marginBottom: 4 }}>Criticality</label>
+          <label style={{ fontSize: '0.75rem', color: '#475569', fontWeight: 600, display: 'block', marginBottom: 4 }}>Criticality</label>
           <select
             value={critFilter}
             onChange={(e) => setCritFilter(e.target.value)}
@@ -80,13 +80,13 @@ export const MachinesPage: React.FC = () => {
       {/* Grid */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: 18 }}>
         {loading ? (
-          <div style={{ padding: 40, color: '#94a3b8' }}>Loading equipment catalog...</div>
+          <div style={{ padding: 40, color: '#64748b' }}>Loading equipment catalog...</div>
         ) : (
           machines.map((m) => (
             <div key={m.id} className="card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
               <div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
-                  <span className="font-mono" style={{ fontSize: '0.85rem', fontWeight: 800, color: '#06b6d4' }}>
+                  <span className="font-mono" style={{ fontSize: '0.85rem', fontWeight: 800, color: '#0284c7' }}>
                     {m.machine_code}
                   </span>
                   <div style={{ display: 'flex', gap: 6 }}>
@@ -95,13 +95,13 @@ export const MachinesPage: React.FC = () => {
                   </div>
                 </div>
 
-                <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#f8fafc', marginBottom: 4 }}>
+                <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#0f172a', marginBottom: 4 }}>
                   {m.name}
                 </h3>
-                <div style={{ fontSize: '0.78rem', color: '#94a3b8', marginBottom: 8 }}>
+                <div style={{ fontSize: '0.78rem', color: '#64748b', marginBottom: 8 }}>
                   Site: {m.site_name} • Type: {m.machine_type}
                 </div>
-                <p style={{ fontSize: '0.82rem', color: '#cbd5e1', lineHeight: 1.4, marginBottom: 12 }}>
+                <p style={{ fontSize: '0.82rem', color: '#334155', lineHeight: 1.4, marginBottom: 12 }}>
                   {m.description}
                 </p>
 

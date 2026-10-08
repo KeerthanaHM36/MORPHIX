@@ -36,10 +36,11 @@ class TechnicianMatcher:
         db: Session,
         service_request_id: UUID,
         weights: Optional[Dict[str, float]] = None,
-        exclude_technician_ids: Optional[List[UUID]] = None
+        exclude_technician_ids: Optional[List[UUID]] = None,
+        only_available: bool = True
     ) -> List[Dict[str, Any]]:
         w = weights or cls.DEFAULT_WEIGHTS
-        exclude_ids = exclude_technician_ids or []
+        exclude_ids = set(exclude_technician_ids or [])
 
         request = db.query(ServiceRequest).filter(ServiceRequest.id == service_request_id).first()
         if not request:
@@ -53,13 +54,36 @@ class TechnicianMatcher:
         site_lat = float(site.latitude) if site and site.latitude else 0.0
         site_lon = float(site.longitude) if site and site.longitude else 0.0
 
-        # Query all active technicians
-        query = db.query(Technician).filter(
-            Technician.is_active == True,
-            Technician.availability_status.in_(["AVAILABLE", "BUSY"])
-        )
+        # Prevent double-booking: find technicians currently active on other jobs
+        active_tech_ids = [
+            row[0] for row in db.query(Assignment.technician_id).filter(
+                Assignment.assignment_status.in_(["ASSIGNED", "CONFIRMED", "IN_PROGRESS"])
+            ).all()
+        ]
+        
+        # If this service request already has an active assignment, get its tech ID
+        current_req_assigned_techs = [
+            row[0] for row in db.query(Assignment.technician_id).filter(
+                Assignment.service_request_id == service_request_id,
+                Assignment.assignment_status.in_(["ASSIGNED", "CONFIRMED", "IN_PROGRESS"])
+            ).all()
+        ]
+
+        if only_available:
+            # Exclude anyone active on any job
+            exclude_ids.update(active_tech_ids)
+            query = db.query(Technician).filter(
+                Technician.is_active == True,
+                Technician.availability_status == "AVAILABLE"
+            )
+        else:
+            query = db.query(Technician).filter(
+                Technician.is_active == True,
+                Technician.availability_status.in_(["AVAILABLE", "BUSY"])
+            )
+
         if exclude_ids:
-            query = query.filter(~Technician.id.in_(exclude_ids))
+            query = query.filter(~Technician.id.in_(list(exclude_ids)))
 
         technicians = query.all()
         candidates = []

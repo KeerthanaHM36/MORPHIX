@@ -115,3 +115,17 @@ class ServiceEvidenceResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+class TechnicianRejectRequest(BaseModel):
+    reason: Optional[str] = "Technician rejected allocation"
+
+class TechnicianActionResponse(BaseModel):
+    success: bool
+    action: str  # "ACCEPTED" or "REJECTED"
+    message: str
+    assignment_id: UUID
+    service_request_id: UUID
+    reallocated: bool = False
+    new_technician_name: Optional[str] = None
+    new_technician_code: Optional[str] = None
+    new_assignment_id: Optional[UUID] = None

@@ -27,10 +27,10 @@ export const AuditLogsPage: React.FC = () => {
     <div className="page-wrapper">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
         <div>
-          <h1 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#f8fafc' }}>
+          <h1 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#0f172a' }}>
             Operational Audit Traceability
           </h1>
-          <p style={{ fontSize: '0.85rem', color: '#94a3b8' }}>
+          <p style={{ fontSize: '0.85rem', color: '#64748b' }}>
             Immutable event journal tracking all work orders, dispatches, exceptions, and AI recovery decisions
           </p>
         </div>
@@ -53,7 +53,7 @@ export const AuditLogsPage: React.FC = () => {
               <tbody>
                 {loading ? (
                   <tr>
-                    <td colSpan={5} style={{ textAlign: 'center', padding: 30, color: '#94a3b8' }}>
+                    <td colSpan={5} style={{ textAlign: 'center', padding: 30, color: '#64748b' }}>
                       Loading audit logs...
                     </td>
                   </tr>
@@ -68,9 +68,9 @@ export const AuditLogsPage: React.FC = () => {
                     <tr
                       key={log.id}
                       onClick={() => setSelectedLog(log)}
-                      style={{ cursor: 'pointer', backgroundColor: selectedLog?.id === log.id ? 'rgba(6, 182, 212, 0.08)' : undefined }}
+                      style={{ cursor: 'pointer', backgroundColor: selectedLog?.id === log.id ? '#eff6ff' : undefined }}
                     >
-                      <td className="font-mono" style={{ fontSize: '0.78rem', color: '#94a3b8' }}>
+                      <td className="font-mono" style={{ fontSize: '0.78rem', color: '#64748b' }}>
                         {new Date(log.created_at).toLocaleString()}
                       </td>
                       <td>
@@ -78,10 +78,10 @@ export const AuditLogsPage: React.FC = () => {
                           {log.action}
                         </span>
                       </td>
-                      <td style={{ fontSize: '0.85rem', color: '#f8fafc', fontWeight: 600 }}>
+                      <td style={{ fontSize: '0.85rem', color: '#0f172a', fontWeight: 600 }}>
                         {log.user_name || 'System'}
                       </td>
-                      <td style={{ fontSize: '0.8rem', color: '#cbd5e1' }}>{log.entity_type}</td>
+                      <td style={{ fontSize: '0.8rem', color: '#334155' }}>{log.entity_type}</td>
                       <td>
                         <button className="btn btn-secondary btn-sm" style={{ padding: '3px 8px', fontSize: '0.75rem' }}>
                           Inspect
@@ -99,37 +99,38 @@ export const AuditLogsPage: React.FC = () => {
         {selectedLog && (
           <div className="card">
             <div className="card-header">
-              <span className="card-title">Audit Record Inspector</span>
-              <button onClick={() => setSelectedLog(null)} style={{ color: '#94a3b8' }}>
+              <span className="card-title" style={{ color: '#0f172a' }}>Audit Record Inspector</span>
+              <button onClick={() => setSelectedLog(null)} style={{ color: '#64748b', background: 'none', border: 'none', cursor: 'pointer' }}>
                 ✕
               </button>
             </div>
 
             <div style={{ marginBottom: 14 }}>
-              <div style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase' }}>Action Executed</div>
-              <div style={{ fontSize: '1rem', fontWeight: 700, color: '#38bdf8' }}>{selectedLog.action}</div>
+              <div style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', fontWeight: 600 }}>Action Executed</div>
+              <div style={{ fontSize: '1rem', fontWeight: 700, color: '#0284c7' }}>{selectedLog.action}</div>
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, fontSize: '0.82rem', marginBottom: 16 }}>
               <div>
-                <span style={{ color: '#64748b' }}>Operator:</span> {selectedLog.user_name || 'System'}
+                <span style={{ color: '#64748b' }}>Operator:</span> <b style={{ color: '#0f172a' }}>{selectedLog.user_name || 'System'}</b>
               </div>
               <div>
-                <span style={{ color: '#64748b' }}>Entity:</span> {selectedLog.entity_type}
+                <span style={{ color: '#64748b' }}>Entity:</span> <b style={{ color: '#0f172a' }}>{selectedLog.entity_type}</b>
               </div>
             </div>
 
             <div style={{ marginBottom: 14 }}>
-              <div style={{ fontSize: '0.75rem', color: '#10b981', fontWeight: 600, marginBottom: 4 }}>
+              <div style={{ fontSize: '0.75rem', color: '#059669', fontWeight: 700, marginBottom: 4 }}>
                 New State Delta (Values)
               </div>
               <pre
                 style={{
-                  backgroundColor: '#0a0f1d',
+                  backgroundColor: '#f8fafc',
+                  border: '1px solid #e2e8f0',
                   padding: 12,
                   borderRadius: 6,
                   fontSize: '0.78rem',
-                  color: '#34d399',
+                  color: '#059669',
                   overflowX: 'auto',
                 }}
               >
@@ -139,16 +140,17 @@ export const AuditLogsPage: React.FC = () => {
 
             {selectedLog.old_values && (
               <div>
-                <div style={{ fontSize: '0.75rem', color: '#f59e0b', fontWeight: 600, marginBottom: 4 }}>
+                <div style={{ fontSize: '0.75rem', color: '#d97706', fontWeight: 700, marginBottom: 4 }}>
                   Previous State (Values)
                 </div>
                 <pre
                   style={{
-                    backgroundColor: '#0a0f1d',
+                    backgroundColor: '#f8fafc',
+                    border: '1px solid #e2e8f0',
                     padding: 12,
                     borderRadius: 6,
                     fontSize: '0.78rem',
-                    color: '#fbbf24',
+                    color: '#d97706',
                     overflowX: 'auto',
                   }}
                 >

@@ -61,9 +61,9 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({ isOpen, 
         right: 0,
         bottom: 0,
         width: 420,
-        backgroundColor: '#111827',
-        borderLeft: '1px solid var(--border-medium)',
-        boxShadow: '-10px 0 30px rgba(0,0,0,0.6)',
+        backgroundColor: '#ffffff',
+        borderLeft: '1px solid #e2e8f0',
+        boxShadow: '-10px 0 30px rgba(0,0,0,0.12)',
         zIndex: 1000,
         display: 'flex',
         flexDirection: 'column',
@@ -72,21 +72,21 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({ isOpen, 
       <div
         style={{
           padding: '20px',
-          borderBottom: '1px solid var(--border-subtle)',
+          borderBottom: '1px solid #e2e8f0',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
         }}
       >
         <div>
-          <h3 style={{ fontSize: '1.1rem', fontWeight: 600 }}>System Notifications</h3>
-          <p style={{ fontSize: '0.8rem', color: '#94a3b8' }}>Live operational alerts & dispatches</p>
+          <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#0f172a', margin: 0 }}>System Notifications</h3>
+          <p style={{ fontSize: '0.8rem', color: '#64748b', margin: '4px 0 0 0' }}>Live operational alerts & dispatches</p>
         </div>
         <div style={{ display: 'flex', gap: 10 }}>
           <button onClick={handleMarkAllRead} className="btn btn-secondary btn-sm" title="Mark all read">
             Clear All
           </button>
-          <button onClick={onClose} style={{ color: '#94a3b8', fontSize: '1.2rem', padding: '0 6px' }}>
+          <button onClick={onClose} style={{ color: '#64748b', fontSize: '1.2rem', padding: '0 6px', background: 'none', border: 'none', cursor: 'pointer' }}>
             ✕
           </button>
         </div>
@@ -94,7 +94,7 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({ isOpen, 
 
       <div style={{ flex: 1, overflowY: 'auto', padding: '16px' }}>
         {loading ? (
-          <div style={{ textAlign: 'center', padding: 40, color: '#94a3b8' }}>Loading alerts...</div>
+          <div style={{ textAlign: 'center', padding: 40, color: '#64748b' }}>Loading alerts...</div>
         ) : notifications.length === 0 ? (
           <div style={{ textAlign: 'center', padding: 40, color: '#64748b' }}>No active notifications</div>
         ) : (
@@ -105,8 +105,8 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({ isOpen, 
               style={{
                 padding: '14px',
                 marginBottom: '10px',
-                backgroundColor: n.is_read ? 'rgba(30, 41, 59, 0.4)' : 'rgba(6, 182, 212, 0.08)',
-                border: n.is_read ? '1px solid var(--border-subtle)' : '1px solid rgba(6, 182, 212, 0.3)',
+                backgroundColor: n.is_read ? '#f8fafc' : '#eff6ff',
+                border: n.is_read ? '1px solid #e2e8f0' : '1px solid #93c5fd',
                 borderRadius: '8px',
                 cursor: n.is_read ? 'default' : 'pointer',
               }}
@@ -117,10 +117,10 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({ isOpen, 
                   {new Date(n.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </span>
               </div>
-              <div style={{ fontWeight: 600, fontSize: '0.88rem', color: '#f8fafc', marginBottom: 4 }}>
+              <div style={{ fontWeight: 600, fontSize: '0.88rem', color: '#0f172a', marginBottom: 4 }}>
                 {n.title}
               </div>
-              <div style={{ fontSize: '0.8rem', color: '#94a3b8', lineHeight: 1.4 }}>
+              <div style={{ fontSize: '0.8rem', color: '#475569', lineHeight: 1.4 }}>
                 {n.message}
               </div>
             </div>

@@ -3,7 +3,8 @@ import {
   User, Organization, Site, Machine, Skill, Technician, 
   SparePart, Inventory, ServiceRequest, Assignment, 
   ServiceTask, ServiceEvidence, ExceptionRecord, 
-  RecoveryPlan, DashboardData, NotificationItem, AuditLogItem 
+  RecoveryPlan, DashboardData, NotificationItem, AuditLogItem,
+  CustomerRequestPayload, ServiceRequestTrackingResponse, TechnicianActionResponse
 } from '../types';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
@@ -76,6 +77,14 @@ export const serviceRequestsAPI = {
     const res = await api.post<ServiceRequest>('/service-requests', data);
     return res.data;
   },
+  createCustomerRequest: async (data: CustomerRequestPayload) => {
+    const res = await api.post<ServiceRequestTrackingResponse>('/service-requests/customer-request', data);
+    return res.data;
+  },
+  getTracking: async (id: string) => {
+    const res = await api.get<ServiceRequestTrackingResponse>(`/service-requests/${id}/tracking`);
+    return res.data;
+  },
   approve: async (id: string) => {
     const res = await api.post<ServiceRequest>(`/service-requests/${id}/approve`);
     return res.data;
@@ -103,6 +112,14 @@ export const assignmentsAPI = {
     const res = await api.patch<Assignment>(`/assignments/${id}`, data);
     return res.data;
   },
+  accept: async (assignmentId: string) => {
+    const res = await api.post<TechnicianActionResponse>(`/assignments/${assignmentId}/accept`);
+    return res.data;
+  },
+  reject: async (assignmentId: string, reason?: string) => {
+    const res = await api.post<TechnicianActionResponse>(`/assignments/${assignmentId}/reject`, { reason });
+    return res.data;
+  },
   optimize: async (requestIds?: string[]) => {
     const res = await api.post<any[]>('/assignments/optimize', { request_ids: requestIds });
     return res.data;
@@ -116,6 +133,12 @@ export const techniciansAPI = {
   },
   get: async (id: string) => {
     const res = await api.get<Technician>(`/technicians/${id}`);
+    return res.data;
+  },
+  getMyAssignments: async (technicianId?: string) => {
+    const res = await api.get<any[]>('/technicians/me/assignments', {
+      params: technicianId ? { technician_id: technicianId } : {},
+    });
     return res.data;
   },
   triggerUnavailable: async (id: string, reason?: string) => {
